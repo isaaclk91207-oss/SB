@@ -4,3 +4,4 @@ torchvision
 pillow
 grad-cam
 reportlab
+opencv-python-headless
