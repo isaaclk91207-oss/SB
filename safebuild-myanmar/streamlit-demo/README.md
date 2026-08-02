@@ -1,8 +1,8 @@
 ---
 title: Safe AI (SafeBuild Myanmar)
 emoji: 🏗️
-colorFrom: orange
-colorTo: red
+colorFrom: red
+colorTo: yellow
 sdk: streamlit
 sdk_version: 1.60.0
 app_file: app.py
