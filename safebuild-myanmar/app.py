@@ -31,7 +31,7 @@ st.subheader(get_text(lang, "app_subtitle"))
 st.info(get_text(lang, "boundary_notice"))
 
 # --- Check model exists ---
-model_path = os.path.join("models", "safebuild_resnet18.pth")
+model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models", "safebuild_resnet18.pth")
 if not os.path.exists(model_path):
     st.error(get_text(lang, "error_model_missing"))
     st.stop()
