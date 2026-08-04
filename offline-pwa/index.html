@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe AI (SafeBuild Myanmar)</title>
+    <meta name="description" content="Post-Earthquake Building Damage Triage">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/ort.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Safe AI (SafeBuild Myanmar)</h1>
+            <p class="subtitle">Post-Earthquake Building Damage Triage</p>
+            <p class="myanmar-subtitle">ငလျင်အလွန် အဆောက်အဦးပျက်စီးမှု အမြန်စိစစ်မှု</p>
+        </header>
+
+        <div class="boundary-notice">
+            <strong>⚠️ Boundary Notice:</strong> This is an AI-based visual triage for exterior photos only. It is not a structural safety certificate and does not replace a licensed engineer.
+        </div>
+
+        <div class="controls">
+            <label class="lang-label">Language:</label>
+            <div class="lang-toggle">
+                <button id="btn-en" class="lang-btn active" onclick="setLang('en')">English</button>
+                <button id="btn-my" class="lang-btn" onclick="setLang('my')">မြန်မာ</button>
+            </div>
+        </div>
+
+        <div class="upload-area" id="upload-area">
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/jpg" hidden>
+            <div class="upload-prompt" id="upload-prompt" onclick="document.getElementById('file-input').click()">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <p id="upload-text">Upload an exterior building photo</p>
+                <p class="upload-hint">JPG or PNG</p>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p id="loading-text">Analyzing image...</p>
+        </div>
+
+        <div id="result" class="result hidden">
+            <h2 id="result-title">Result</h2>
+
+            <div class="result-card">
+                <div class="priority-row">
+                    <span id="priority-label" class="priority-label">Priority:</span>
+                    <span id="priority-value" class="priority-value">-</span>
+                </div>
+                <p id="priority-desc" class="priority-desc"></p>
+                <div class="confidence-row">
+                    <span id="confidence-label">Model confidence:</span>
+                    <span id="confidence-value">-</span>
+                </div>
+                <div id="action-box" class="action-box"></div>
+            </div>
+
+            <div class="warning-notice">
+                <strong>⚠️ Caveat:</strong> <span id="caveat-text">This is an AI-based visual triage for exterior photos only. It is not a structural safety certificate and does not replace a licensed engineer.</span>
+            </div>
+
+            <h3 id="evidence-title">Evidence</h3>
+            <div class="evidence-grid">
+                <div class="evidence-item">
+                    <canvas id="original-canvas"></canvas>
+                    <p id="photo-caption">Original Photo</p>
+                </div>
+                <div class="evidence-item">
+                    <canvas id="heatmap-canvas"></canvas>
+                    <p>Grad-CAM Heatmap</p>
+                </div>
+            </div>
+
+            <button id="download-btn" class="download-btn" onclick="downloadPDF()">
+                📄 Download PDF Report
+            </button>
+        </div>
+
+        <footer class="footer">
+            <p><strong>Safe AI (SafeBuild Myanmar)</strong></p>
+            <p>AI-Assisted Earthquake Damage Triage</p>
+            <p>Not a substitute for licensed engineering assessment</p>
+            <p class="offline-badge" id="offline-badge">✓ Available Offline</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
